@@ -38,8 +38,7 @@ public class FilesDAOImpl implements FilesDAO {
         try {
             File folder = new File(getUserDirectory());
             return Arrays.stream(
-                        folder
-                            .listFiles()
+                        folder.listFiles()
                     )
                     .filter(x -> !x.isDirectory())
                     .collect(Collectors.toList());

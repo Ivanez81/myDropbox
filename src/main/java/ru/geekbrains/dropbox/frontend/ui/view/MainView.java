@@ -9,6 +9,8 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.components.grid.ItemClickListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import ru.geekbrains.dropbox.frontend.service.AuthService;
 import ru.geekbrains.dropbox.frontend.service.FilesService;
 
 import java.io.File;
@@ -24,6 +26,12 @@ public class MainView extends VerticalLayout implements View {
 
     @Autowired
     FilesService filesService;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @Autowired
+    AuthService authService;
 
     private Grid<File> gridFiles = new Grid<>();
     private FileDownloader fileDownloader;
@@ -91,8 +99,10 @@ public class MainView extends VerticalLayout implements View {
 
         layoutActions.addComponent(new Button("Exit user: " +
                 SecurityContextHolder.getContext().getAuthentication().getName(), clickEvent -> {
-            //getUI().getPage().open("/logout", null);
-            getUI().getPage().setLocation("/logout");
+//            getUI().getPage().open("/logout", null);
+            getUI().getPage().setLocation("/start");
+            authService.logout();
+//            getUI().getNavigator().navigateTo("/start");
         }));
 
         ArrayList<TextField> arrTextFields = new ArrayList<>();
@@ -128,9 +138,6 @@ public class MainView extends VerticalLayout implements View {
             layoutAddFilter.addComponents(lblOr, textAddFilter, btnDelFilter);
             addComponent(layoutAddFilter);
         });
-
-
-
     }
 
     private void startedUpload(Upload.StartedEvent event) {
@@ -147,7 +154,6 @@ public class MainView extends VerticalLayout implements View {
                     e.printStackTrace();
                     return null;
                 }
-
             }
         }, fileName);
     }
