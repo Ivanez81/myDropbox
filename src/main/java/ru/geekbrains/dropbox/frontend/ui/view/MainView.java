@@ -91,8 +91,8 @@ public class MainView extends VerticalLayout implements View {
 
         layoutActions.addComponent(new Button("Exit user: " +
                 SecurityContextHolder.getContext().getAuthentication().getName(), clickEvent -> {
-            //getUI().getPage().open("/logout", null);
-            getUI().getPage().setLocation("/logout");
+//            getUI().getPage().open("/logout", null);
+            getUI().getPage().setLocation("/start");
         }));
 
         ArrayList<TextField> arrTextFields = new ArrayList<>();
@@ -128,9 +128,6 @@ public class MainView extends VerticalLayout implements View {
             layoutAddFilter.addComponents(lblOr, textAddFilter, btnDelFilter);
             addComponent(layoutAddFilter);
         });
-
-
-
     }
 
     private void startedUpload(Upload.StartedEvent event) {
@@ -147,7 +144,6 @@ public class MainView extends VerticalLayout implements View {
                     e.printStackTrace();
                     return null;
                 }
-
             }
         }, fileName);
     }

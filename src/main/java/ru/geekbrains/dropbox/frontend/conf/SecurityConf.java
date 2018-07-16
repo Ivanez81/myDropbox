@@ -1,6 +1,5 @@
 package ru.geekbrains.dropbox.frontend.conf;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -8,6 +7,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -35,29 +35,19 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers("/vaadinServlet/**", "/VAADIN/**", "/PUSH/**",
-                        "/UIDL/**", "/login", "/login/**", "/register",
+                        "/UIDL/**", "/start", "/login", "/login/**", "/register",
                         "/environment").permitAll()
                 .antMatchers("/**").fullyAuthenticated()
                 .and()
                 .csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
+                .exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/start"))
                 .and()
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new PasswordEncoder() {
-            @Override
-            public String encode(CharSequence charSequence) {
-                return charSequence.toString();
-            }
-
-            @Override
-            public boolean matches(CharSequence charSequence, String s) {
-                return charSequence.toString().equals(s);
-            }
-        };
+        return new BCryptPasswordEncoder();
     }
 
 }

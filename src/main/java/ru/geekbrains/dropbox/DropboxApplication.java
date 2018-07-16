@@ -10,9 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 @SpringBootApplication
-@ComponentScan
 public class DropboxApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(DropboxApplication.class, args);
     }
